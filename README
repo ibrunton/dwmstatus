@@ -1,0 +1,6 @@
+This is inspired by TrilbyWhite's dwmStatus program.  I modified it to suit my
+needs.  There are two versions: one for a desktop, and one for a laptop.  The
+difference is that laptop.c queries battery information and desktop.c doesn't.
+
+The program is dependent on stlarch's ohsnap.icons or terminusmod.icons font in
+order to display correctly.
