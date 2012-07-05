@@ -72,6 +72,7 @@ main (int argc, char *argv[])
 	int num, num2;
 	long jif1, jif2, jif3, jift;
 	long lnum1, lnum2, lnum3, lnum4;
+	long prev_total, prev_idle, diff_total, diff_idle, total; /* my additions */
 	char statnext[80], status[256];
 	char dbstatus[13];
 	time_t current;
@@ -80,6 +81,9 @@ main (int argc, char *argv[])
 	infile = fopen (CPU_FILE, "r");
 	fscanf (infile, "cpu %ld %ld %ld %ld", &jif1, &jif2, &jif3, &jift);
 	fclose (infile);
+
+	prev_idle = 0;
+	prev_total = 0;
 
 	display = XOpenDisplay (NULL);
 	if (display == NULL) {
@@ -96,15 +100,17 @@ main (int argc, char *argv[])
 		fscanf (infile, "cpu %ld %ld %ld %ld", &lnum1, &lnum2, &lnum3, &lnum4);
 		fclose (infile);
 
-		if (lnum4 > jift)
-			num = (int) 100 * (((lnum1 - jif1) + (lnum2 - jif2) + (lnum3 - jif3)) / (lnum4 - jift));
-		else
-			num = 0;
+		total = lnum1 + lnum2 + lnum3 + lnum4;
+		diff_idle = lnum4 - prev_idle;
+		diff_total = total - prev_total;
+		num = (int) (1000 * (diff_total - diff_idle) / diff_total + 5) / 10;
 
 		jif1 = lnum1;
 		jif2 = lnum2;
 		jif3 = lnum3;
 		jift = lnum4;
+		prev_total = total;
+		prev_idle = lnum4;
 
 		if (num > CPU_HIGH)
 			sprintf (statnext, CPU_HI_STR, num);
