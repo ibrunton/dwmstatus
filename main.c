@@ -187,8 +187,6 @@ main (int argc, char *argv[])
 			sprintf (statnext, PAC0_STR, num);
 		strcat (status, statnext);
 
-		num = 0;
-
 		infile = fopen (AUR_FILE, "r");
 		fscanf (infile, "%d", &num2);
 		fclose (infile);
