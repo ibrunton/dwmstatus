@@ -1,6 +1,9 @@
 This is inspired by TrilbyWhite's dwmStatus program.  I modified it to suit my
-needs.  There are two versions: one for a desktop, and one for a laptop.  The
-difference is that laptop.c queries battery information and desktop.c doesn't.
+needs.
+
+If compiling for a laptop, use the `-DLAPTOP' flag in the Makefile in order to
+enable battery monitoring.  If compiling on a desktop, or if you simply don't
+want a battery monitor, comment out or remove that flag.
 
 The program is dependent on stlarch's ohsnap.icons or terminusmod.icons font in
 order to display correctly.

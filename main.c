@@ -44,23 +44,22 @@
 #define DROPBOX		"dropbox status"
 
 /* display format strings */
-#define CPU_STR			"Ñ %d%%"				/* CPU percent when below CPU_HI% */
-#define CPU_HI_STR		"Ñ %d%%"                /* CPU percent when above CPU_HI */
-#define MEM_STR			"   Mem %ld (%ld%%)"		/* memory, takes (up to) 3 integers: free, buffers, and cache */
-#define BATT_STR		"   µ %d%%"				/* Battery, unplugged, above BATT_LOW% */
-#define BATT_LOW_STR	"   µ %d%%"					/* Battery, unplugged, below BATT_LOW% remaining */
-#define BATT_CHRG_STR	"   µ %d%%"					/* Battery, when charging (plugged into AC) */
-#define VOL_STR			"   í %d%%"
-#define DB_IDLE			"   Ñ"                      		/* dropbox idle */
-#define DB_UP			"   Û"                  /* dropbox uploading */
-#define DB_DOWN			"   Ú"                  /* dropbox downloading */
+#define CPU_STR			"Ñ %d%%"                        /* CPU percent when below CPU_HI% */
+#define CPU_HI_STR		"Ñ %d%%"                        /* CPU percent when above CPU_HI */
+#define MEM_STR			"   Mem %ld kB (%ld%%)"	    /* memory, takes (up to) 3 integers: free, buffers, and cache */
+#define VOL_STR			"   í %d%%"                     /* volume */
+#define DB_IDLE			"   Ñ"                            /* dropbox idle */
+#define DB_UP			"   Û"                          /* dropbox uploading */
+#define DB_DOWN			"   Ú"                          /* dropbox downloading */
 #define PAC0_STR		"   Pac %d"                         /* pacman, no updates available */
 #define PAC_STR			"   Pac %d"
 #define AUR0_STR		" / AUR %d"                         /* AUR, no updates available */
 #define AUR_STR			" / AUR %d"
-#define W_MAIL_STR		"   Wolf %d"
+#define W_MAIL_STR		"   Wolf %d"                    /* wolfshift mail account */
+#define W_MAIL_ERR_STR	"   Wolf %d"
 #define W_NO_MAIL_STR	"   Wolf %d"
-#define I_MAIL_STR		" / Ian %d"
+#define I_MAIL_STR		" / Ian %d"                     /* iandbrunton mail account */
+#define I_MAIL_ERR_STR	"   Ian %d"
 #define I_NO_MAIL_STR	" / Ian %d"
 #define DATE_TIME_FMT	"   |   %a %d %b * %H:%M "
 
@@ -125,7 +124,8 @@ main (int argc, char *argv[])
 		fclose (infile);
 		sprintf (statnext, MEM_STR, lnum1 - lnum2, 100 * (lnum1 - lnum2) / lnum1);
 		strcat (status, statnext);
-		
+
+#ifdef LAPTOP
 		/* power/battery: */
 		infile = fopen (BATT_NOW, "r");
 		fscanf (infile, "%ld\n", &lnum1);
@@ -151,12 +151,17 @@ main (int argc, char *argv[])
 		}
 		strcat (status, statnext);
 
+		num = 0;                                /* reset num so values don't get repeated */
+#endif
+
 		/* volume */
 		infile = fopen (VOL_FILE, "r");
 		fscanf (infile, "%d", &num);
 		fclose (infile);
 		sprintf (statnext, VOL_STR, num);
 		strcat (status, statnext);
+
+		num = 0;                                /* reset num so values don't get repeated */
 
 		/* dropbox */
 		infile = popen (DROPBOX, "r");
@@ -170,6 +175,8 @@ main (int argc, char *argv[])
 			sprintf (statnext, DB_IDLE);
 		strcat (status, statnext);
 
+		num = 0;
+
 		/* pacman/aur */
 		infile = fopen (PAC_FILE, "r");
 		fscanf (infile, "%d", &num);
@@ -179,6 +186,8 @@ main (int argc, char *argv[])
 		else
 			sprintf (statnext, PAC0_STR, num);
 		strcat (status, statnext);
+
+		num = 0;
 
 		infile = fopen (AUR_FILE, "r");
 		fscanf (infile, "%d", &num2);
@@ -190,24 +199,34 @@ main (int argc, char *argv[])
 			sprintf (statnext, AUR0_STR, num2);
 		strcat (status, statnext);
 
+		num = 0;
+
 		/* mail: */
 		infile = fopen (W_MAIL, "r");
 		fscanf (infile, "%d", &num);
 		fclose (infile);
 		if (num > 0)
 			sprintf (statnext, W_MAIL_STR, num);
+		else if (num < 0)
+			sprintf (statnext, W_MAIL_ERR_STR, num);
 		else
 			sprintf (statnext, W_NO_MAIL_STR, num);
 		strcat (status, statnext);
+
+		num = 0;
 
 		infile = fopen (I_MAIL, "r");
 		fscanf (infile, "%d", &num);
 		fclose (infile);
 		if (num > 0)
 			sprintf (statnext, I_MAIL_STR, num);
+		else if (num < 0)
+			sprintf (statnext, I_MAIL_ERR_STR, num);
 		else
 			sprintf (statnext, I_NO_MAIL_STR, num);
 		strcat (status, statnext);
+
+		num = 0;
 
 		/* date and time: */
 		time (&current);

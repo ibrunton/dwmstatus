@@ -6,7 +6,7 @@ APPNAME=dwmstatus
 VERSION=0.1a
 CC=gcc
 CFLAGS=-c -g -Wall -DVERSION=\"$(VERSION)\" -DAPPNAME=\"$(APPNAME)\" \
-       -lX11
+       -lX11 -DLAPTOP
 LDFLAGS=-lX11
 SRC=main.c
 OBJ=$(SRC:.c=.o)
