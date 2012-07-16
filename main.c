@@ -47,6 +47,9 @@
 #define CPU_STR			"Ñ %d%%"                        /* CPU percent when below CPU_HI% */
 #define CPU_HI_STR		"Ñ %d%%"                        /* CPU percent when above CPU_HI */
 #define MEM_STR			"   Mem %ld kB (%ld%%)"	    /* memory, takes (up to) 3 integers: free, buffers, and cache */
+#define BATT_STR        "   ð %d%%"                    /* battery, unplugged */
+#define BATT_LOW_STR    "   î %d%%"                     /* battery, unplugged, below BATT_LOW */
+#define BATT_CHRG_STR   "   µ %d%%"                     /* battery, unplugged, charging */
 #define VOL_STR			"   í %d%%"                     /* volume */
 #define DB_IDLE			"   Ñ"                            /* dropbox idle */
 #define DB_UP			"   Û"                          /* dropbox uploading */
