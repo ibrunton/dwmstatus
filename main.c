@@ -33,9 +33,9 @@
 #define COLOUR_FILE	"/home/ian/.config/herbstluftwm/colours"
 #define CPU_FILE	"/proc/stat"
 #define MEM_FILE	"/proc/meminfo"
-#define BATT_NOW	"/sys/class/power_supply/BAT1/charge_now"
-#define BATT_FULL	"/sys/class/power_supply/BAT1/charge_full"
-#define BATT_STAT	"/sys/class/power_supply/BAT1/status"
+#define BATT_NOW	"/sys/class/power_supply/BAT0/charge_now"
+#define BATT_FULL	"/sys/class/power_supply/BAT0/charge_full"
+#define BATT_STAT	"/sys/class/power_supply/BAT0/status"
 #define VOL_FILE	"/home/ian/.local/share/volume"
 #define PAC_FILE	"/home/ian/.local/share/pacman_count"
 #define AUR_FILE	"/home/ian/.local/share/aur_count"
@@ -46,10 +46,10 @@
 /* display format strings */
 #define CPU_STR			"Ñ %d%%"                        /* CPU percent when below CPU_HI% */
 #define CPU_HI_STR		"Ñ %d%%"                        /* CPU percent when above CPU_HI */
-#define MEM_STR			"   Mem %ld kB (%ld%%)"	    /* memory, takes (up to) 3 integers: free, buffers, and cache */
-#define BATT_STR        "   ð %d%%"                    /* battery, unplugged */
+#define MEM_STR			"   Mem %ld%%"	                /* memory, takes (up to) 3 integers: free, buffers, and cache */
+#define BATT_STR        "   ð %d%%"                     /* battery, unplugged */
 #define BATT_LOW_STR    "   î %d%%"                     /* battery, unplugged, below BATT_LOW */
-#define BATT_CHRG_STR   "   µ %d%%"                     /* battery, unplugged, charging */
+#define BATT_CHRG_STR   "   µ %d%%"                     /* battery, charging */
 #define VOL_STR			"   í %d%%"                     /* volume */
 #define DB_IDLE			"   Ñ"                            /* dropbox idle */
 #define DB_UP			"   Û"                          /* dropbox uploading */
@@ -125,7 +125,7 @@ main (int argc, char *argv[])
 		fscanf (infile, "MemTotal: %ld kB\nMemFree: %ld kB\nBuffers %ld kB\nCached: %ld kB\n",
 				&lnum1, &lnum2, &lnum3, &lnum4);
 		fclose (infile);
-		sprintf (statnext, MEM_STR, lnum1 - lnum2, 100 * (lnum1 - lnum2) / lnum1);
+		sprintf (statnext, MEM_STR, 100 * (lnum1 - lnum2) / lnum1);
 		strcat (status, statnext);
 
 #ifdef LAPTOP
