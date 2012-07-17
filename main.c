@@ -120,6 +120,8 @@ main (int argc, char *argv[])
 			sprintf (statnext, CPU_STR, num);
 		strcat (status, statnext);
 
+		num = 0;                                /* reset num so values don't get repeated */
+
 		/* memory use: */
 		infile = fopen (MEM_FILE, "r");
 		fscanf (infile, "MemTotal: %ld kB\nMemFree: %ld kB\nBuffers %ld kB\nCached: %ld kB\n",
