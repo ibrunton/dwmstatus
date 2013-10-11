@@ -30,15 +30,12 @@
 #define INTERVAL	1
 
 /* files read for system info */
-#define COLOUR_FILE	"/home/ian/.config/herbstluftwm/colours"
 #define CPU_FILE	"/proc/stat"
 #define MEM_FILE	"/proc/meminfo"
 #define BATT_NOW	"/sys/class/power_supply/BAT0/charge_now"
 #define BATT_FULL	"/sys/class/power_supply/BAT0/charge_full"
 #define BATT_STAT	"/sys/class/power_supply/BAT0/status"
 #define VOL_FILE	"/home/ian/.local/share/volume"
-#define PAC_FILE	"/home/ian/.local/share/pacman_count"
-#define AUR_FILE	"/home/ian/.local/share/aur_count"
 #define W_MAIL		"/home/ian/.local/share/mailcount_wolfshift"
 #define I_MAIL		"/home/ian/.local/share/mailcount_iandbrunton"
 #define DROPBOX		"dropbox status"
@@ -54,10 +51,6 @@
 #define DB_IDLE			"   Ñ"                            /* dropbox idle */
 #define DB_UP			"   Û"                          /* dropbox uploading */
 #define DB_DOWN			"   Ú"                          /* dropbox downloading */
-#define PAC0_STR		"   Pac %d"                         /* pacman, no updates available */
-#define PAC_STR			"   Pac %d"
-#define AUR0_STR		" / AUR %d"                         /* AUR, no updates available */
-#define AUR_STR			" / AUR %d"
 #define W_MAIL_STR		"   Wolf %d"                    /* wolfshift mail account */
 #define W_MAIL_ERR_STR	"   Wolf %d"
 #define W_NO_MAIL_STR	"   Wolf %d"
@@ -178,28 +171,6 @@ main (int argc, char *argv[])
 			sprintf (statnext, DB_UP);
 		else
 			sprintf (statnext, DB_IDLE);
-		strcat (status, statnext);
-
-		num = 0;
-
-		/* pacman/aur */
-		infile = fopen (PAC_FILE, "r");
-		fscanf (infile, "%d", &num);
-		fclose (infile);
-		if (num > 0)
-			sprintf (statnext, PAC_STR, num);
-		else
-			sprintf (statnext, PAC0_STR, num);
-		strcat (status, statnext);
-
-		infile = fopen (AUR_FILE, "r");
-		fscanf (infile, "%d", &num2);
-		fclose (infile);
-		num2 -= num;
-		if (num2 > 0)
-			sprintf (statnext, AUR_STR, num2);
-		else
-			sprintf (statnext, AUR0_STR, num2);
 		strcat (status, statnext);
 
 		num = 0;
